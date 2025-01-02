@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StationsService } from './stations.service';
-import { Trip } from 'src/common/interfaces/trip.interface';
+import { TripFormatted } from 'src/common/interfaces/trip.interface';
 
 @Controller('stations')
 export class StationsController {
@@ -34,7 +34,7 @@ export class StationsController {
     }
     // Modify the `realtimeArrival` field
     stationData.routes.forEach((route) => {
-      route.trips.forEach((trip: Trip) => {
+      route.trips.forEach((trip: TripFormatted) => {
         trip.stoptimes.forEach((stoptime) => {
           const arrivalDate = secondsAfterMidnightToCustomFormat(
             stoptime.realtimeArrival,

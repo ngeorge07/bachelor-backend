@@ -1,6 +1,6 @@
-import { Trip } from './trip.interface';
+import { TripRaw } from './trip.interface';
 
 export interface Route {
   shortName: string;
-  trips: Trip[];
+  trips: TripRaw[];
 }
