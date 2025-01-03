@@ -11,8 +11,8 @@ export const getCurrentTimeInSeconds = (): number => {
 export const getStopIndex = (
   stoptimes: {
     stop: { name: string; gtfsId: string };
-    realtimeDeparture: number;
-    realtimeArrival: number;
+    scheduledDeparture: number;
+    scheduledArrival: number;
   }[],
   currentStopName: string,
 ): number => {
@@ -38,12 +38,12 @@ export const filterTrips = (trips: TripRaw[], currentStopName: string) => {
     // Filter out stoptimes that are before the current time
     const validStoptimes = trip.stoptimes
       .slice(stopIndex)
-      .filter((stopTime) => stopTime.realtimeDeparture > currentTime);
+      .filter((stopTime) => stopTime.scheduledDeparture > currentTime);
 
     // If all the stoptimes before the current stop have already passed, exclude the route
     const hasFutureStops = trip.stoptimes.some((stopTime, index) => {
       if (index < stopIndex) {
-        return stopTime.realtimeDeparture > currentTime;
+        return stopTime.scheduledDeparture > currentTime;
       }
       return false;
     });

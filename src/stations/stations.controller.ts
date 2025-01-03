@@ -1,6 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { TripFormatted } from 'src/common/interfaces/trip.interface';
+import secondsAfterMidnightToCustomFormat from 'src/utils/formatSecondsAfterMidnight';
 
 @Controller('stations')
 export class StationsController {
@@ -15,37 +16,25 @@ export class StationsController {
   async getStationById(@Param('id') id: string) {
     const stationData = await this.stationsService.getStationDetails(id);
 
-    function secondsAfterMidnightToCustomFormat(seconds) {
-      const midnight = new Date();
-      midnight.setHours(0, 0, 0, 0); // Reset time to midnight
-
-      // Add the seconds
-      const resultDate = new Date(midnight.getTime() + seconds * 1000);
-
-      // Format the date
-      const day = resultDate.getDate().toString().padStart(2, '0');
-      const month = (resultDate.getMonth() + 1).toString().padStart(2, '0'); // Months are 0-based
-      const year = resultDate.getFullYear();
-      const hours = resultDate.getHours().toString().padStart(2, '0');
-      const minutes = resultDate.getMinutes().toString().padStart(2, '0');
-      const secs = resultDate.getSeconds().toString().padStart(2, '0');
-
-      return `${day}-${month}-${year} ${hours}:${minutes}:${secs}`;
-    }
-    // Modify the `realtimeArrival` field
+    // Modify the `scheduledArrival` field
     stationData.routes.forEach((route) => {
       route.trips.forEach((trip: TripFormatted) => {
-        trip.stoptimes.forEach((stoptime) => {
+        trip.stoptimes.forEach((stopTime) => {
           const arrivalDate = secondsAfterMidnightToCustomFormat(
-            stoptime.realtimeArrival,
+            stopTime.scheduledArrival,
+            route.delay,
           );
 
           const departureDate = secondsAfterMidnightToCustomFormat(
-            stoptime.realtimeDeparture,
+            stopTime.scheduledDeparture,
+            route.delay,
           );
 
-          stoptime.realtimeArrival = arrivalDate;
-          stoptime.realtimeDeparture = departureDate;
+          stopTime.scheduledArrival = arrivalDate.scheduled;
+          stopTime.scheduledDeparture = departureDate.scheduled;
+
+          stopTime.estimatedTimeArrival = arrivalDate.estimated;
+          stopTime.estimatedTimeDeparture = departureDate.estimated;
         });
       });
     });

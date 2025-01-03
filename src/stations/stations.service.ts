@@ -25,8 +25,8 @@ export class StationsService {
       currentStopName,
     ).sort(
       (a, b) =>
-        a.trips[0].stoptimes[0].realtimeDeparture -
-        b.trips[0].stoptimes[0].realtimeDeparture,
+        a.trips[0].stoptimes[0].scheduledDeparture -
+        b.trips[0].stoptimes[0].scheduledDeparture,
     ); // Sort by closest departure;
 
     const routesWithDelays = await Promise.all(
