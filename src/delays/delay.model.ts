@@ -6,7 +6,7 @@ export type DelayDocument = Delay & Document;
 @Schema()
 export class Delay {
   @Prop({ required: true })
-  tripId: string;
+  trainNumber: string;
 
   @Prop({ default: 0 })
   delay: number;
