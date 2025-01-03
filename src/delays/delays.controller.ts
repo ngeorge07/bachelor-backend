@@ -11,7 +11,17 @@ export class DelaysController {
     @Param('id') trainNumber: string,
     @Body() setDelayDto: SetDelayDto,
   ) {
-    return this.delaysService.setDelay(trainNumber, setDelayDto.delay);
+    const { delay } = setDelayDto;
+
+    if (delay === 0) {
+      // Call removeDelay service if delay is 0
+      await this.delaysService.removeDelay(trainNumber);
+      return {
+        message: `Delay for trip ${trainNumber} has been removed.`,
+      };
+    }
+
+    return this.delaysService.setDelay(trainNumber, delay);
   }
 
   @Delete(':id')
