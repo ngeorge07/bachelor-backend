@@ -1,10 +1,14 @@
 import { Injectable } from '@nestjs/common';
 import { OpenTransportService } from './open-transport.service';
 import { filterRoutes } from 'src/utils/filter-trips';
+import { DelaysService } from 'src/delays/delays.service';
 
 @Injectable()
 export class StationsService {
-  constructor(private readonly openTransportService: OpenTransportService) {}
+  constructor(
+    private readonly openTransportService: OpenTransportService,
+    private readonly delayService: DelaysService,
+  ) {}
 
   async getAllStations() {
     return this.openTransportService.fetchStations();
@@ -21,13 +25,25 @@ export class StationsService {
       currentStopName,
     ).sort(
       (a, b) =>
-        a.trips[0].stoptimes[0].realtimeDeparture -
-        b.trips[0].stoptimes[0].realtimeDeparture,
+        a.trips[0].stoptimes[0].scheduledDeparture -
+        b.trips[0].stoptimes[0].scheduledDeparture,
     ); // Sort by closest departure;
+
+    const routesWithDelays = await Promise.all(
+      filteredRoutes.map(async (route) => {
+        const delayData = await this.delayService.getDelayByTrainNumber(
+          route.shortName,
+        );
+        return {
+          ...route,
+          delay: delayData?.delay || 0,
+        };
+      }),
+    );
 
     return {
       ...stationDetails,
-      routes: filteredRoutes, // Use filtered and sorted routes
+      routes: routesWithDelays,
     };
   }
 }

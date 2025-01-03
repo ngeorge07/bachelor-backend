@@ -36,8 +36,8 @@ export class OpenTransportService {
                 name
                 gtfsId
               }
-              realtimeArrival
-              realtimeDeparture
+              scheduledArrival
+              scheduledDeparture
             }
           }
         }

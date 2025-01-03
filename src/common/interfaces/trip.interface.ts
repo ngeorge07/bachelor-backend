@@ -4,8 +4,10 @@ export interface TripFormatted {
   gtfsId: string;
   stoptimes: {
     stop: Stop;
-    realtimeArrival: string;
-    realtimeDeparture: string;
+    scheduledArrival: string;
+    scheduledDeparture: string;
+    estimatedTimeDeparture: string;
+    estimatedTimeArrival: string;
   }[];
 }
 
@@ -13,7 +15,9 @@ export interface TripRaw {
   gtfsId: string;
   stoptimes: {
     stop: Stop;
-    realtimeArrival: number;
-    realtimeDeparture: number;
+    scheduledArrival: number;
+    scheduledDeparture: number;
+    estimatedTimeDeparture: number;
+    estimatedTimeArrival: number;
   }[];
 }
