@@ -11,9 +11,6 @@ export class DelaysController {
     @Param('id') trainNumber: string,
     @Body() setDelayDto: SetDelayDto,
   ) {
-    console.log(
-      `Received trainNumber: ${trainNumber} with delay: ${setDelayDto.delay}`,
-    );
     return this.delaysService.setDelay(trainNumber, setDelayDto.delay);
   }
 
