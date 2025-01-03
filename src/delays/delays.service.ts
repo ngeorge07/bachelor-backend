@@ -14,12 +14,12 @@ export class DelaysService {
   ) {}
 
   // Check for an existing delay and update or create a new one
-  async setDelay(tripId: string, delay: number): Promise<Delay> {
+  async setDelay(trainNumber: string, delay: number): Promise<Delay> {
     if (delay === 0) {
       throw new BadRequestException('Delay cannot be set to 0.');
     }
 
-    const existingDelay = await this.delayModel.findOne({ tripId }).exec();
+    const existingDelay = await this.delayModel.findOne({ trainNumber }).exec();
 
     if (existingDelay) {
       // If delay exists, update it
@@ -27,21 +27,21 @@ export class DelaysService {
       return existingDelay.save();
     } else {
       // If delay doesn't exist, create a new one
-      const newDelay = new this.delayModel({ tripId, delay });
+      const newDelay = new this.delayModel({ trainNumber, delay });
       return newDelay.save();
     }
   }
 
-  // Find a delay by tripId (or shortName if needed)
-  async getDelayByTripId(tripId: string): Promise<Delay | null> {
-    return this.delayModel.findOne({ tripId }).exec();
+  // Find a delay by trainNumber (or shortName if needed)
+  async getDelayByTrainNumber(trainNumber: string): Promise<Delay | null> {
+    return this.delayModel.findOne({ trainNumber }).exec();
   }
 
-  async removeDelay(tripId: string): Promise<string> {
-    const existingDelay = await this.delayModel.findOne({ tripId }).exec();
+  async removeDelay(trainNumber: string): Promise<string> {
+    const existingDelay = await this.delayModel.findOne({ trainNumber }).exec();
 
     if (existingDelay) {
-      await this.delayModel.deleteOne({ tripId });
+      await this.delayModel.deleteOne({ trainNumber });
       return 'Delay removed successfully.';
     } else {
       // If no delay found, throw a NotFoundException with a custom message

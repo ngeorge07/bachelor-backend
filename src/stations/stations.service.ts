@@ -31,7 +31,7 @@ export class StationsService {
 
     const routesWithDelays = await Promise.all(
       filteredRoutes.map(async (route) => {
-        const delayData = await this.delayService.getDelayByTripId(
+        const delayData = await this.delayService.getDelayByTrainNumber(
           route.shortName,
         );
         delayData && console.log(delayData);
