@@ -10,7 +10,7 @@ export class DelaysService {
   ) {}
 
   // Check for an existing delay and update or create a new one. Delays are set in minutes.
-  async setDelay(trainNumber: string, delay: number): Promise<Delay> {
+  async setDelay(trainNumber: string, delay: number) {
     const existingDelay = await this.delayModel.findOne({ trainNumber }).exec();
 
     if (existingDelay) {
@@ -25,16 +25,18 @@ export class DelaysService {
   }
 
   // Find a delay by trainNumber (or shortName if needed)
-  async getDelayByTrainNumber(trainNumber: string): Promise<Delay | null> {
+  async getDelayByTrainNumber(trainNumber: string) {
     return this.delayModel.findOne({ trainNumber }).exec();
   }
 
-  async removeDelay(trainNumber: string): Promise<string> {
+  async removeDelay(trainNumber: string) {
     const existingDelay = await this.delayModel.findOne({ trainNumber }).exec();
 
     if (existingDelay) {
       await this.delayModel.deleteOne({ trainNumber });
-      return 'Delay removed successfully.';
+      return {
+        message: 'Delay removed successfully.',
+      };
     } else {
       // If no delay found, throw a NotFoundException with a custom message
       throw new NotFoundException("This train doesn't have a delay.");
