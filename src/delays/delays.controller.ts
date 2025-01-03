@@ -7,6 +7,7 @@ export class DelaysController {
 
   @Post(':id')
   async setDelay(@Param('id') tripId: string, @Body('delay') delay: number) {
+    console.log(`Received tripId: ${tripId} with delay: ${delay}`);
     return this.delaysService.setDelay(tripId, delay);
   }
 

@@ -14,6 +14,11 @@ export class DelaysService {
     return newDelay.save();
   }
 
+  // Find a delay by tripId (or shortName if needed)
+  async getDelayByTripId(tripId: string): Promise<Delay | null> {
+    return this.delayModel.findOne({ tripId }).exec();
+  }
+
   async removeDelay(tripId: string): Promise<any> {
     return this.delayModel.deleteOne({ tripId });
   }
