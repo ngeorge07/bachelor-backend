@@ -34,8 +34,6 @@ export class StationsService {
         const delayData = await this.delayService.getDelayByTrainNumber(
           route.shortName,
         );
-        delayData && console.log(delayData);
-
         return {
           ...route,
           delay: delayData?.delay || 0,

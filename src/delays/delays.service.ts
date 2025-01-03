@@ -1,8 +1,4 @@
-import {
-  BadRequestException,
-  Injectable,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Delay, DelayDocument } from './delay.model';
@@ -13,12 +9,8 @@ export class DelaysService {
     @InjectModel(Delay.name) private readonly delayModel: Model<DelayDocument>,
   ) {}
 
-  // Check for an existing delay and update or create a new one
+  // Check for an existing delay and update or create a new one. Delays are set in minutes.
   async setDelay(trainNumber: string, delay: number): Promise<Delay> {
-    if (delay === 0) {
-      throw new BadRequestException('Delay cannot be set to 0.');
-    }
-
     const existingDelay = await this.delayModel.findOne({ trainNumber }).exec();
 
     if (existingDelay) {
