@@ -2,12 +2,14 @@ import { Injectable } from '@nestjs/common';
 import { OpenTransportService } from './open-transport.service';
 import { filterRoutes } from 'src/utils/filter-trips';
 import { DelaysService } from 'src/delays/delays.service';
+import { RemarksService } from 'src/remarks/remarks.service';
 
 @Injectable()
 export class StationsService {
   constructor(
     private readonly openTransportService: OpenTransportService,
     private readonly delayService: DelaysService,
+    private readonly remarksService: RemarksService,
   ) {}
 
   async getAllStations() {
@@ -24,9 +26,15 @@ export class StationsService {
         const delayData = await this.delayService.getDelayByTrainNumber(
           route.shortName,
         );
+
+        const remarkData = await this.remarksService.getRemarkByTrainNumber(
+          route.shortName,
+        );
+
         return {
           ...route,
           delay: delayData?.delay || 0,
+          remarks: remarkData?.messages || [],
         };
       }),
     );

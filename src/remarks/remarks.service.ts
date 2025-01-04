@@ -14,6 +14,10 @@ export class RemarksService {
     private readonly remarkModel: Model<RemarkDocument>,
   ) {}
 
+  async getRemarkByTrainNumber(trainNumber: string) {
+    return this.remarkModel.findOne({ trainNumber }).exec();
+  }
+
   async addRemark(trainNumber: string, message: string) {
     const remark = await this.remarkModel.findOne({ trainNumber }).exec();
 

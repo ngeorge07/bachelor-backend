@@ -10,5 +10,6 @@ import { Remark, RemarkSchema } from './remark.model';
   ],
   controllers: [RemarksController],
   providers: [RemarksService],
+  exports: [RemarksService],
 })
 export class RemarksModule {}
