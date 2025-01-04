@@ -1,6 +1,6 @@
 import { Controller, Post, Delete, Param, Body } from '@nestjs/common';
 import { DelaysService } from './delays.service';
-import { SetDelayDto } from 'src/common/dto/set-delay.dto';
+import { SetDelayDto } from './dto/set-delay.dto';
 
 @Controller('trip/delays')
 export class DelaysController {
