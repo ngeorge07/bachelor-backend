@@ -1,6 +1,6 @@
 import { Controller, Get, Param } from '@nestjs/common';
 import { StationsService } from './stations.service';
-import { TripFormatted } from 'src/common/interfaces/trip.interface';
+import { TripFormatted } from 'src/shared/interfaces/trip.interface';
 import secondsAfterMidnightToCustomFormat from 'src/utils/formatSecondsAfterMidnight';
 
 @Controller('stations')

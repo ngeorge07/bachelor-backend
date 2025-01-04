@@ -16,7 +16,6 @@ import { CreateUserDto } from 'src/users/dto/create-user.dto';
 export class AuthController {
   constructor(private authService: AuthService) {}
 
-  @Public()
   @Post('signup')
   async signup(@Body() createUserDto: CreateUserDto) {
     try {

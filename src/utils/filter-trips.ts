@@ -1,7 +1,7 @@
 // src/utils/filterTrips.ts
 
-import { Route } from 'src/common/interfaces/route.interface';
-import { TripRaw } from 'src/common/interfaces/trip.interface';
+import { Route } from 'src/shared/interfaces/route.interface';
+import { TripRaw } from 'src/shared/interfaces/trip.interface';
 
 export const getCurrentTimeInSeconds = (): number => {
   const now = new Date();

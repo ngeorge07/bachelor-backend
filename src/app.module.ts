@@ -8,6 +8,8 @@ import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { CommandModule } from 'nestjs-command';
+import { SeedsModule } from './shared/seeds.module';
 
 @Module({
   imports: [
@@ -18,6 +20,8 @@ import { JwtAuthGuard } from './auth/jwt-auth.guard';
     RemarksModule,
     AuthModule,
     UsersModule,
+    CommandModule,
+    SeedsModule,
   ],
   providers: [
     {
