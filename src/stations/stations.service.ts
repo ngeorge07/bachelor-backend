@@ -19,18 +19,8 @@ export class StationsService {
       await this.openTransportService.fetchStationDetails(gtfsId);
     const currentStopName = stationDetails.name; // This is the stop the user selects, e.g., "Semlac"
 
-    // Filter the routes and trips with sorting
-    const filteredRoutes = filterRoutes(
-      stationDetails.routes,
-      currentStopName,
-    ).sort(
-      (a, b) =>
-        a.trips[0].stoptimes[0].scheduledDeparture -
-        b.trips[0].stoptimes[0].scheduledDeparture,
-    ); // Sort by closest departure;
-
     const routesWithDelays = await Promise.all(
-      filteredRoutes.map(async (route) => {
+      stationDetails.routes.map(async (route) => {
         const delayData = await this.delayService.getDelayByTrainNumber(
           route.shortName,
         );
@@ -41,9 +31,16 @@ export class StationsService {
       }),
     );
 
+    // Filter the routes and trips with sorting
+    const filteredRoutes = filterRoutes(routesWithDelays, currentStopName).sort(
+      (a, b) =>
+        a.trips[0].stoptimes[0].scheduledDeparture -
+        b.trips[0].stoptimes[0].scheduledDeparture,
+    ); // Sort by closest departure;
+
     return {
       ...stationDetails,
-      routes: routesWithDelays,
+      routes: filteredRoutes,
     };
   }
 }
