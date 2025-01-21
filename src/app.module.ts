@@ -6,11 +6,12 @@ import { RemarksModule } from './remarks/remarks.module';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { APP_GUARD } from '@nestjs/core';
-import { JwtAuthGuard } from './auth/jwt-auth.guard';
+import { JwtAuthGuard } from './auth/guards/jwt-auth.guard';
 import { CommandModule } from 'nestjs-command';
 import { SeedsModule } from './shared/seeds.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import 'dotenv/config';
+import { RolesGuard } from './auth/guards/roles.guard';
 
 @Module({
   imports: [
@@ -29,6 +30,10 @@ import 'dotenv/config';
     {
       provide: APP_GUARD,
       useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
     },
   ],
 })
