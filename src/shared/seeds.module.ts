@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CommandModule } from 'nestjs-command';
-import { UsersCommand } from 'src/users/userss.command';
+import { UsersCommand } from 'src/users/users.command';
 import { UsersService } from 'src/users/users.service';
 import { User, UserSchema } from 'src/users/user.model';
 

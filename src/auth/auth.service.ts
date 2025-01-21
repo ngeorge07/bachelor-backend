@@ -29,11 +29,11 @@ export class AuthService {
   }
 
   async login(email: string, pass: string) {
-    const user =
-      (await this.usersService.findOne(email)) ||
-      (() => {
-        throw new NotFoundException();
-      })();
+    const user = await this.usersService.findOne(email);
+
+    if (!user) {
+      throw new NotFoundException();
+    }
 
     const isMatch = await bcrypt.compare(pass, user.password);
     if (!isMatch) {
@@ -43,6 +43,7 @@ export class AuthService {
       sub: user._id,
       email: user.email,
       fullName: user.fullName,
+      roles: user.roles,
     };
 
     return {

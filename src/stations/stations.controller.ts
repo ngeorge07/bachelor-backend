@@ -2,16 +2,19 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { StationsService } from './stations.service';
 import { TripFormatted } from 'src/shared/interfaces/trip.interface';
 import secondsAfterMidnightToCustomFormat from 'src/utils/formatSecondsAfterMidnight';
+import { Public } from 'src/auth/decorators/public.decorator';
 
 @Controller('stations')
 export class StationsController {
   constructor(private readonly stationsService: StationsService) {}
 
+  @Public()
   @Get()
   async getAllStations() {
     return this.stationsService.getAllStations();
   }
 
+  @Public()
   @Get(':id')
   async getStationById(@Param('id') id: string) {
     const stationData = await this.stationsService.getStationDetails(id);

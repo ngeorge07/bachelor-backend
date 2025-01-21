@@ -2,6 +2,7 @@ import 'dotenv/config';
 import { ExtractJwt, Strategy } from 'passport-jwt';
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
+import { Role } from 'src/users/enums/role.enum';
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
@@ -13,11 +14,17 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  async validate(payload: { sub: number; email: string; fullName: string }) {
+  async validate(payload: {
+    sub: number;
+    email: string;
+    fullName: string;
+    roles: Role[];
+  }) {
     return {
       userId: payload.sub,
       email: payload.email,
       fullName: payload.fullName,
+      roles: payload.roles,
     };
   }
 }
