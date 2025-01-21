@@ -5,18 +5,22 @@ import {
   Get,
   Request,
   ConflictException,
+  UseGuards,
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
-import { Public } from './public.decorator';
-import {} from '@nestjs/common';
+import { Public } from './decorators/public.decorator';
 import { SignInDto } from './dto/signIn.dto';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { Roles } from 'src/auth/decorators/roles.decorator';
+import { Role } from 'src/users/enums/role.enum';
+import { IdMatchGuard } from 'src/auth/guards/idMatch.guard';
 
 @Controller('auth')
 export class AuthController {
   constructor(private authService: AuthService) {}
 
   @Post('signup')
+  @Roles(Role.SuperAdmin)
   async signup(@Body() createUserDto: CreateUserDto) {
     try {
       return await this.authService.signUp(createUserDto);
@@ -38,6 +42,7 @@ export class AuthController {
   }
 
   @Get('profile')
+  @UseGuards(IdMatchGuard)
   getProfile(@Request() req) {
     return req.user;
   }
