@@ -1,6 +1,7 @@
 import { Command } from 'nestjs-command';
 import { Injectable } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { Role } from './enums/role.enum';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
@@ -18,9 +19,17 @@ export class UsersCommand {
       fullName: 'Admin account',
       email: 'admin@admin.com',
       password: await bcrypt.hash('Administrator1', 10),
+      roles: [Role.Admin],
     });
 
-    if (admin) {
+    const superAdmin = await this.usersService.createUser({
+      fullName: 'Super Admin user',
+      email: 'superAdmin@admin.com',
+      password: await bcrypt.hash('SuperAdministrator1', 10),
+      roles: [Role.SuperAdmin],
+    });
+
+    if (admin && superAdmin) {
       console.log('Default user accounts seeded successfully');
     }
   }
